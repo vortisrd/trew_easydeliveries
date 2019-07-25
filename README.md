@@ -1,9 +1,9 @@
 # Trew_EasyDeliveries
-Delivery system coded on ESX.
+Delivery system coded on ESX.  
 Made for you to create any delivery job you want to or create a delivery mission for an existing job.
 
-## Demo
-The demonstration can be [found here](https://streamable.com/9nj17).
+## Demo  
+The demonstration can be [found here](https://streamable.com/9nj17).  
 I created a marker at the Ballas location and made an event that when you press **E**, it starts a delivery mission with 2 locations.
 
 ## Usage
@@ -56,48 +56,48 @@ There's an example below using the Ballas gang job to create a cocain delivery m
 ```
 
 ## Variables
-**job**
+**job**  
 The job you want to create the delivery. Ex: ballas, losvagos, baker, pizzaman, etc.
 *Must be the same identifier as in the database*
 
-**product**
-The job you want to create the delivery. Ex: cocain_pouch, bread, pizza, etc.
+**product**  
+The job you want to create the delivery. Ex: cocain_pouch, bread, pizza, etc.  
 *Must be the same identifier as in the database*
 
-**howmany**
+**howmany**  
 The amount of deliveries you want to make. It's important for it to be equal or bigger than the amount of blips.
 
-**label**
+**label**  
 Blip label on the map
 
-**title**
+**title**  
 The title of the delivery action
 
-**reward**
+**reward**  
 The amount of money you receive each delivery made
 
-**rewardtype**
+**rewardtype**  
 The type of money you receive. If it's set to ***cash*** it goes to your wallet, ***black*** it goes as black money and ***bank*** if you want it to go straight to your bank account.
 
-**anim** 
+**anim**   
 If you want animations, you need to specify this variable as a table, using the following options:
 
  - **dict**: The animation dictionary
  - **anim**: The animation id
 
-*More info on animations [here](https://alexguirre.github.io/animations-list/).
+*More info on animations [here](https://alexguirre.github.io/animations-list/).  
 There's a YouTube channel containing video on a bunch of animations and it's IDs. [Take a look](https://www.youtube.com/channel/UCzkFiWms11gxAip6n0cQz3A).*
 
-**blipcolor**
+**blipcolor**  
 The color of the blip and the route on the map. [Here's a list of blip color codes](https://gtaforums.com/topic/864881-all-blip-color-ids-pictured/).
 
-**markercolor** 
+**markercolor**  
 The RGB color code, on where:
  - **r**: The amount of RED
  - **g**: The amount of GREEN
  - **b**: The amount of BLUE
 
-**markervisibility** 
+**markervisibility**  
 It defines how many meters your blip will be visible for you
 
 **blips** 
@@ -107,7 +107,7 @@ The delivery locations identifiers. You should use the pattern
  - **y**: the Y axis
  - **z**: the Z axis
 
-**function callback** 
+**function callback**  
 It returns ***true*** when you complete a delivery, ***not_enough_items*** if you run out of items in the middle of a delivery mission, ***delivery_cancelled*** if your delivery was cancelled, **dead** if you die and ***false*** for other reasons.
 
 
