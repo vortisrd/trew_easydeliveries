@@ -4,7 +4,6 @@ Made for you to create any delivery job you want to or create a delivery mission
 
 ## Requirements
 * [es_extended](https://github.com/ESX-Org/es_extended)
-* [esx_jobs](https://github.com/ESX-Org/esx_jobs)
 
 ## Demo  
 I created a marker at the Ballas location and made an event that when you press **E**, it starts a delivery mission with 2 locations. If the player below doesn't work, the demonstration can be [found here](https://streamable.com/9nj17)
