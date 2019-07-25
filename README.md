@@ -1,11 +1,11 @@
 # Trew_EasyDeliveries
 Delivery system coded on ESX. Made for you to create any delivery job you want to or create a delivery mission for an existing job.
 
-# Demo
+## Demo
 The demonstration can be [found here](https://streamable.com/9nj17).
 I created a marker at the Ballas location and made an event that when you press **E**, it starts a delivery mission with 2 locations.
 
-# Usage
+## Usage
 There's an example below using the Ballas gang job to create a cocain delivery mission. Usually, you should create a marker and start the event when pressing any button at it.
 ```
 
@@ -54,7 +54,7 @@ There's an example below using the Ballas gang job to create a cocain delivery m
     
 ```
 
-# Variables
+## Variables
 **job**
 The job you want to create the delivery. Ex: ballas, losvagos, baker, pizzaman, etc.
 *Must be the same identifier as in the database*
@@ -111,7 +111,7 @@ It returns ***true*** when you complete a delivery, ***not_enough_items*** if yo
 
 
 
-# Download & Installation
+## Download & Installation
 1) Download the .zip.
 2) Extract the .zip.
 3) Place `trew_easydeliveries` in your ESX Directory
