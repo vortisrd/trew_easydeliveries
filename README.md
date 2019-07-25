@@ -2,6 +2,9 @@
 Delivery system coded on ESX.  
 Made for you to create any delivery job you want to or create a delivery mission for an existing job.
 
+### Requirements
+* [es_extended](https://github.com/ESX-Org/es_extended)
+
 ## Demo  
 The demonstration can be [found here](https://streamable.com/9nj17). I created a marker at the Ballas location and made an event that when you press **E**, it starts a delivery mission with 2 locations.
 
