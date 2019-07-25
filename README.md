@@ -116,3 +116,9 @@ It returns ***true*** when you complete a delivery, ***not_enough_items*** if yo
 2) Extract the .zip.
 3) Place `trew_easydeliveries` in your ESX Directory
 4) Add `start trew_easydeliveries` to your server.cfg
+
+
+## Discord
+
+<img src="https://discordapp.com/api/guilds/531620822054600714/widget.png?style=banner2" alt="Discord Banner 2"/>
+
