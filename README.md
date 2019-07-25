@@ -1,5 +1,6 @@
 # Trew_EasyDeliveries
-Delivery system coded on ESX. Made for you to create any delivery job you want to or create a delivery mission for an existing job.
+Delivery system coded on ESX.
+Made for you to create any delivery job you want to or create a delivery mission for an existing job.
 
 ## Demo
 The demonstration can be [found here](https://streamable.com/9nj17).
