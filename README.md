@@ -50,7 +50,7 @@ There's an example below using the Ballas gang job to create a cocain delivery m
         elseif status == 'dead' then
             print(' You died')
         else
-            print('Something went wrong and I don't know what it is')
+            print("Something went wrong and I don't know what it is")
         end
 
     end)
