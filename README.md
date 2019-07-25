@@ -2,11 +2,16 @@
 Delivery system coded on ESX.  
 Made for you to create any delivery job you want to or create a delivery mission for an existing job.
 
-### Requirements
+## Requirements
 * [es_extended](https://github.com/ESX-Org/es_extended)
+* [esx_jobs](https://github.com/ESX-Org/esx_jobs)
 
 ## Demo  
-The demonstration can be [found here](https://streamable.com/9nj17). I created a marker at the Ballas location and made an event that when you press **E**, it starts a delivery mission with 2 locations.
+I created a marker at the Ballas location and made an event that when you press **E**, it starts a delivery mission with 2 locations. If the player below doesn't work, the demonstration can be [found here](https://streamable.com/9nj17)
+https://streamable.com/9nj17
+
+## Download
+https://github.com/vortisrd/trew_easydeliveries
 
 ## Usage
 There's an example below using the Ballas gang job to create a cocain delivery mission. Usually, you should create a marker and start the event when pressing any button at it.
@@ -111,6 +116,11 @@ The delivery locations identifiers. You should use the pattern
 
 **function callback**  
 It returns ***true*** when you complete a delivery, ***not_enough_items*** if you run out of items in the middle of a delivery mission, ***delivery_cancelled*** if your delivery was cancelled, **dead** if you die and ***false*** for other reasons.
+
+
+-- 
+
+I hope you guys like it! :smiley:
 
 
 
