@@ -132,5 +132,5 @@ I hope you guys like it! :smiley:
 
 ## Discord
 
-<img src="https://discordapp.com/api/guilds/531620822054600714/widget.png?style=banner2" alt="Discord Banner 2"/>
+<a href="https://discord.gg/6pAfTkB" target="_blank"><img src="https://discordapp.com/api/guilds/531620822054600714/widget.png?style=banner2" alt="Discord Banner 2"/></a>
 
