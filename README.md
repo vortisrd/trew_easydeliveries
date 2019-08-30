@@ -231,10 +231,6 @@ The delivery locations identifiers. You should use the pattern
  - **y**: the Y axis
  - **z**: the Z axis
 
-**function callback**  
-It returns ***true*** when you complete a delivery, ***not_enough_items*** if you run out of items in the middle of a delivery mission, ***delivery_cancelled*** if your delivery was cancelled, **dead** if you die and ***false*** for other reasons.
-
-
 -- 
 
 I hope you guys like it! :smiley:
