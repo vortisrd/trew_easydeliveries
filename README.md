@@ -149,10 +149,10 @@ That being said, here's an example on how you could do that.
     TriggerEvent('trew_easydeliveries:start', {
         player = source,
         job = 'ballas',
-        product = 'bread',
+        product = 'cocain_pouch',
         howmany = 10,
-        label = 'Venda de cocaína', 
-        title = 'Entrega de cocaína.',
+        label = 'Cocain sell', 
+        title = 'Cocain delivery',
         reward = 1000,
         rewardtype = 'black_money',
         anim = {
