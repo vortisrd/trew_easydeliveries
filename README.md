@@ -1,5 +1,6 @@
 
 
+
 # Trew_EasyDeliveries
 Delivery system coded on ESX.  
 Made for you to create any delivery job you want to or create a delivery mission for an existing job.
@@ -22,7 +23,7 @@ Let's say you have a Ballas gang script and want to create a drug delivery missi
  3. Input the product you want to be delivered
  4. Start the mission
 
-That being said, here's an example on how you could do that on the job you are creating/editing:
+That being said, here's an example on how you could do that.
 
 
 #### config.lua
@@ -148,10 +149,10 @@ That being said, here's an example on how you could do that on the job you are c
     TriggerEvent('trew_easydeliveries:start', {
         player = source,
         job = 'ballas',
-        product = 'cocain_pouch',
+        product = 'bread',
         howmany = 10,
-        label = 'Cocain Selling', 
-        title = 'Cocain Delivery',
+        label = 'Venda de cocaína', 
+        title = 'Entrega de cocaína.',
         reward = 1000,
         rewardtype = 'black_money',
         anim = {
@@ -250,3 +251,10 @@ I hope you guys like it! :smiley:
 ## Discord
 
 <a href="https://discord.gg/6pAfTkB" target="_blank"><img src="https://discordapp.com/api/guilds/531620822054600714/widget.png?style=banner2" alt="Discord Banner 2"/></a>
+
+## Changelog
+**Aug 30th, 2019**
+
+ - Item consumption and rewarding were moved to server-side;
+ - Item consumption is now random from 1 to a maximum of 5 (*default*), acting as a multiplier for the reward. You can change the maximum value in **config.lua**;
+ - The locations are now randomly selected.
