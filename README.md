@@ -1,3 +1,5 @@
+
+
 # Trew_EasyDeliveries
 Delivery system coded on ESX.  
 Made for you to create any delivery job you want to or create a delivery mission for an existing job.
@@ -12,54 +14,169 @@ https://streamable.com/9nj17
 ## Download
 https://github.com/vortisrd/trew_easydeliveries
 
-## Usage
-There's an example below using the Ballas gang job to create a cocain delivery mission. Usually, you should create a marker and start the event when pressing any button at it.
+## Usage and Example
+Let's say you have a Ballas gang script and want to create a drug delivery mission. You need to:
+
+ 1. Create a marker to get the mission
+ 2. Create an array of blip locations
+ 3. Input the product you want to be delivered
+ 4. Start the mission
+
+That being said, here's an example on how you could do that on the job you are creating/editing:
+
+
+#### config.lua
+
+```
+    Config = {}
+
+    Config.DrugDeliveryBlipColor = 27
+    Config.DrugDeliveryMarkerColor = { 210, 0, 255 }
+    Config.DrugDeliveryPickup = { x = 84.72, y = -1958.43, z = 20.20 }
+    Config.DrugDeliveryLocations = {
+        { x = -1218.90,         y = 665.73,             z = 144.53 }, 
+        { x = -1338.42,         y = 606.44,             z = 134.37 }, 
+        { x = -1052.13,         y = 431.67,             z = 77.06 }, 
+        { x = -904.04,          y = 191.49,             z = 69.04 },
+        { x = -23.75,           y = -23.71,             z = 73.24 }, 
+        { x = 226.15,           y = -283.52,            z = 49.35 }
+    }
 ```
 
+
+#### client.lua
+
+```
+    local Keys = {
+        ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57, 
+        ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177, 
+        ["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18,
+        ["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182,
+        ["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81,
+        ["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70, 
+        ["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
+        ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
+        ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
+    }
+
+    local ESX    = nil
+
+    -- ESX
+    Citizen.CreateThread(function()
+        while ESX == nil do
+            TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+            Citizen.Wait(0)
+        end
+     
+    end)
+
+    isDeliveryGoing = false
+
+    -- Countdown
+    Citizen.CreateThread(function()
+        while true do
+            Citizen.Wait(0)
+
+            if exports.trew_easydeliveries:deliveryStatus() == false then
+
+                local x,y,z = table.unpack(GetEntityCoords(PlayerPedId()))
+                local bz,cz = GetGroundZFor_3dCoord(Config.DrugDeliveryPickup['x'], Config.DrugDeliveryPickup['y'], Config.DrugDeliveryPickup['z'])
+                local distance = GetDistanceBetweenCoords(Config.DrugDeliveryPickup['x'], Config.DrugDeliveryPickup['y'],cz,x,y,z,true)
+
+                if distance <= 40 then
+
+                    ballasDrawMarker(
+                        1,
+                        { Config.DrugDeliveryPickup['x'], Config.DrugDeliveryPickup['y'], Config.DrugDeliveryPickup['z'] },
+                        { Config.DrugDeliveryMarkerColor[1],Config.DrugDeliveryMarkerColor[2],Config.DrugDeliveryMarkerColor[3] }
+                    )
+
+                    if distance <= 1.2 then
+
+                        -- IF YOU PRESS E, YOU MAKE THE DELIVERY
+                        if IsControlJustPressed(0,Keys['E']) and not IsPedInAnyVehicle(PlayerPedId()) then
+                            TriggerServerEvent('esx_trew_ballas:drugDelivery')
+                        else
+                            SetTextComponentFormat('STRING')
+                            AddTextComponentString('Pressione ~INPUT_PICKUP~ iniciar as entregas. ~b~')
+                            DisplayHelpTextFromStringLabel(0, 0, 1, -1)
+                        end
+                    end
+
+                end
+
+            end
+
+        end
+    end)
+
+
+    function ballasDrawMarker(markerType,markerCoords,makerColor)
+        DrawMarker(
+            markerType,
+            markerCoords[1],markerCoords[2],markerCoords[3],
+            0.0, 0.0, 0.0,
+            0.0, 0.0, 0.0,
+            1.5, 1.5, 1.0,
+            makerColor[1],makerColor[2],makerColor[3],
+            100,
+            false,
+            true,
+            2,
+            true,
+            false,
+            false,
+            false
+        )
+    end
+```
+
+
+
+#### server.lua
+
+```
+
+    ESX  = nil
+    local deliveryPlayers = {}
+
+    TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+
+    RegisterServerEvent('esx_trew_ballas:drugDelivery')
+    AddEventHandler('esx_trew_ballas:drugDelivery', function()
+
     TriggerEvent('trew_easydeliveries:start', {
+        player = source,
         job = 'ballas',
         product = 'cocain_pouch',
-        howmany = 5,
-        label = 'Cocain', 
-        title = 'Cocain delivery mission started!',
+        howmany = 10,
+        label = 'Cocain Selling', 
+        title = 'Cocain Delivery',
         reward = 1000,
-        rewardtype = 'black',
+        rewardtype = 'black_money',
         anim = {
-            dict = 'pickup_object',
-            name = 'putdown_low'
+            dict = 'anim@heists@money_grab@duffel',
+            name = 'enter'
         },
-        blipcolor = 27,
+        blipcolor = Config.DrugDeliveryBlipColor,
         markercolor = {
-            r = 210,
-            g = 0,
-            b = 255
+            r = Config.DrugDeliveryMarkerColor[1],
+            g = Config.DrugDeliveryMarkerColor[2],
+            b = Config.DrugDeliveryMarkerColor[3]
         },
         markervisibility = 40,
-        blips = {
-            { x = -904.04,          y = 191.49,             z = 69.04 },
-            { x = -23.75,           y = -23.71,             z = 73.24 }, 
-            { x = 226.15,           y = -283.52,            z = 49.35 }, 
-            { x = 5.97,             y = -708.16,            z = 45.97 }, 
-            { x = 285.29,           y = -937.44,            z = 29.38 }, 
-            { x = 411.78,           y = -1487.88,           z = 30.14 },
-        }
-    }, function(status)
+        blips = Config.DrugDeliveryLocations
+    })
 
-        if status == true then
-            print('The deliveries were made')
-        elseif status == 'not_enough_items' then
-            print('You ran out of items')
-        elseif status == 'delivery_cancelled' then
-            print(' The deliveries were cancelled')
-        elseif status == 'dead' then
-            print(' You died')
-        else
-            print("Something went wrong and I don't know what it is")
-        end
+
 
     end)
     
 ```
+
+## Exported Functions
+**exports.trew_easydeliveries:deliveryStatus()**
+It tells you if the delivery is active or not
 
 ## Variables
 **job**  
@@ -133,4 +250,3 @@ I hope you guys like it! :smiley:
 ## Discord
 
 <a href="https://discord.gg/6pAfTkB" target="_blank"><img src="https://discordapp.com/api/guilds/531620822054600714/widget.png?style=banner2" alt="Discord Banner 2"/></a>
-

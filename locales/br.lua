@@ -10,8 +10,8 @@ Locales['br'] = {
 	['delivery_complete'] = 'Todas as entregas foram ~g~efetuadas~w~.',
 	['delivery_cancelled'] = 'As entregas atuais foram ~y~canceladas~w~.',
 
-	['not_enough_items_start'] = '~r~ERRO:~w~ Você não possui itens suficientes para fazer as entregas. Reabasteça seu inventário e tente novamente.',
-	['not_enough_items_in_between'] = '~r~ERRO:~w~ Seu inventário possui menos do que o necessário para continuar as entregas. Cancelando as entregas.',
+	['not_enough_items_start'] = '~y~STATUS:~w~ Itens suficientes para fazer a entregas. Finalizando...',
+	['not_enough_items_in_between'] = '~y~STATUS:~w~ Seus itens acabaram. Finalizando...',
 	['more_checkpoints_than_items'] = '~r~ERRO:~w~ A quantidade de entregas é maior que a quantidade de localizações.',
 	['already_doing_deliveries'] = '~r~ERRO:~w~ Você já está fazendo entregas. Pressione ~r~%s~w~ para cancelar as entregas atuais.',
 	['youre_dead'] = '~r~ERRO:~w~ Você não pode fazer entregas pois está morto.',

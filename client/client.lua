@@ -29,9 +29,8 @@ local itemsAmmount = 0
 local playerJob = nil
 
 
-
-RegisterNetEvent('trew_easydeliveries:start')
-AddEventHandler('trew_easydeliveries:start', function(args,cb)
+RegisterNetEvent('trew_easydeliveries:checkList')
+AddEventHandler('trew_easydeliveries:checkList', function(args)
 
 	TriggerServerEvent('trew_easydeliveries:getJob', args['job'])
 
@@ -48,17 +47,15 @@ AddEventHandler('trew_easydeliveries:start', function(args,cb)
 			if args['howmany'] <= #args['blips'] then
 
 				TriggerServerEvent('trew_easydeliveries:checkInventory', args['product'])
-				PlaySoundFrontend(-1, '5_SEC_WARNING', 'HUD_MINI_GAME_SOUNDSET', 1)
+				TriggerEvent('trew_easydeliveries:playSound', 'countdown')
 				ESX.ShowNotification( _U('starting_system') )
 
 				SetTimeout(1000, function()
 
 
-					-- JUST CHECKING IF YOUR JOB IS THE SAME AS DEFINED
-					if playerJob == args['job'] then
 
 						-- FAKE CALL TO GIVE THE SERVER TIME TO RETURN THE ITEM INVENTORY
-						PlaySoundFrontend(-1, '5_SEC_WARNING', 'HUD_MINI_GAME_SOUNDSET', 1)
+						TriggerEvent('trew_easydeliveries:playSound', 'countdown')
 						ESX.ShowNotification( _U('checking_inventory') )
 
 
@@ -69,20 +66,20 @@ AddEventHandler('trew_easydeliveries:start', function(args,cb)
 							-- IF YOU HAVE ITEMS ENOUGH FOR DELIVERY!
 							if itemsAmmount >= args['howmany'] then
 
-								PlaySoundFrontend(-1, '5_SEC_WARNING', 'HUD_MINI_GAME_SOUNDSET', 1)
+								TriggerEvent('trew_easydeliveries:playSound', 'countdown')
 								ESX.ShowNotification( _U('calculating_routes') )
 
 								SetTimeout(1000, function()
 									-- START!
-									PlaySoundFrontend(-1, 'Event_Start_Text', 'GTAO_FM_Events_Soundset', 1)
-									trewDeliveryStart(args,cb)
+									TriggerEvent('trew_easydeliveries:playSound', 'start')
+									trewDeliveryStart(args)
 								end)
 
 
 							else
 
 
-								PlaySoundFrontend(-1, 'CHECKPOINT_MISSED', 'HUD_MINI_GAME_SOUNDSET', 1)
+								TriggerEvent('trew_easydeliveries:playSound', 'error')
 								ESX.ShowNotification( _U('not_enough_items_start') )
 
 
@@ -90,12 +87,6 @@ AddEventHandler('trew_easydeliveries:start', function(args,cb)
 
 						end)
 
-					else
-
-						PlaySoundFrontend(-1, 'CHECKPOINT_MISSED', 'HUD_MINI_GAME_SOUNDSET', 1)
-						ESX.ShowNotification( _U('different_job') )
-
-					end
 
 
 
@@ -107,13 +98,13 @@ AddEventHandler('trew_easydeliveries:start', function(args,cb)
 
 			else
 
-				PlaySoundFrontend(-1, 'CHECKPOINT_MISSED', 'HUD_MINI_GAME_SOUNDSET', 1)
+				TriggerEvent('trew_easydeliveries:playSound', 'error')
 				ESX.ShowNotification( _U('more_checkpoints_than_items') )
 
 			end
 
 		else
-			PlaySoundFrontend(-1, 'CHECKPOINT_MISSED', 'HUD_MINI_GAME_SOUNDSET', 1)
+			TriggerEvent('trew_easydeliveries:playSound', 'error')
 			ESX.ShowNotification( string.format( Locales[Config.Locale]['already_doing_deliveries'], Config.cancelDeliveryKey ) )
 		end
 
@@ -147,15 +138,13 @@ AddEventHandler('trew_easydeliveries:cancel', function()
 end)
 
 
-function trewDeliveryStart(args,cb)
+function trewDeliveryStart(args)
 
 	local job = args['job']
 	local product = args['product']
 	local howmany = args['howmany']
 	local label = args['label']
 	local title = args['title']
-	local reward = args['reward']
-	local rewardtype = args['rewardtype']
 	local blips = args['blips']
 	local blipColor = args['blipcolor']
 	local r,g,b = args['markercolor']['r'],args['markercolor']['g'],args['markercolor']['b']
@@ -168,8 +157,7 @@ function trewDeliveryStart(args,cb)
 	blips[currentblip]['active'] = false
 	blips[currentblip]['delivered'] = false
 
-	PlaySoundFrontend(-1, 'Event_Start_Text', 'GTAO_FM_Events_Soundset', 1)
-	ESX.ShowNotification( _U('title') )
+	ESX.ShowNotification( title )
 	ESX.ShowNotification( _U('first_checkpoint') )
 
 
@@ -180,8 +168,7 @@ function trewDeliveryStart(args,cb)
 
 			-- CANCEL
 			if IsControlJustReleased(0,Keys[ Config.cancelDeliveryKey ]) then
-				cb('delivery_cancelled')
-				PlaySoundFrontend(-1, 'CHECKPOINT_MISSED', 'HUD_MINI_GAME_SOUNDSET', 1)
+				TriggerEvent('trew_easydeliveries:playSound', 'error')
 				TriggerEvent('trew_easydeliveries:cancel')
 				ESX.ShowNotification( _U('delivery_cancelled') )
 			else
@@ -220,64 +207,39 @@ function trewDeliveryStart(args,cb)
 							{ r, g, b }
 						)
 
-
 						-- ... AND BY 1.2 METERS, THE HELPER WILL SHOW.
 						if distance <= 1.2 then
 
 
 								-- IF YOU PRESS E, YOU MAKE THE DELIVERY
-								if IsControlJustPressed(0,Keys['E']) and not IsPedInAnyVehicle(PlayerPedId()) then
+								if IsControlJustPressed(0,Keys['E']) then
 
-									blips[currentblip]['active'] = false
-									blips[currentblip]['delivered'] = true
-									
-									RemoveBlip(deliveryBlip)
-									blipCount = math.floor(blipCount+1)
-									deliveryBlip = nil
+											blips[currentblip]['active'] = false
+											blips[currentblip]['delivered'] = true
+											
+											RemoveBlip(deliveryBlip)
+											blipCount = math.floor(blipCount+1)
+											deliveryBlip = nil
 
-									if (anim) and (anim['dict']) and (anim['name']) then
+											if (anim) and (anim['dict']) and (anim['name']) then
 
-										ESX.Streaming.RequestAnimDict(anim['dict'], function()
-											TaskPlayAnim(PlayerPedId(), anim['dict'], anim['name'], 8.0, -8.0, -1, 0, 0, false, false, false)
-										end)
+												ESX.Streaming.RequestAnimDict(anim['dict'], function()
+													TaskPlayAnim(PlayerPedId(), anim['dict'], anim['name'], 8.0, -8.0, -1, 0, 0, false, false, false)
+												end)
 
-									end
-
-
-									-- REMOVING THE ITEM FROM YOUR INVENTORY
-									TriggerServerEvent('trew_easydeliveries:removeItemAndReward', product, reward, rewardtype, 1)
-
-
-									-- CHECKING IF THE DELIVERY IS COMPLETE
-									if blipCount > howmany then
-										cb(true)
-										TriggerEvent('trew_easydeliveries:cancel')
-										PlaySoundFrontend(-1, 'Event_Start_Text', 'GTAO_FM_Events_Soundset', 1)
-										ESX.ShowNotification( _U('delivery_complete') )
-									else
-
-
-										-- ... AND IT IF'TS NOT, CHECKING THE INVENTORY AGAIN, COZ, WHY NOT?
-										TriggerServerEvent('trew_easydeliveries:checkInventory', product)
-
-										--SetTimeout(500, function()
-
-											-- IF YOU, BY MISTAKE, EITHER USED ONE OF THE ITEMS DESTINED FOR DELIVERY OR LOST IT, THE EVENT WILL BE CANCELLED
-											if itemsAmmount < math.floor(howmany-blipCount) then
-												cb('not_enough_items')
-												PlaySoundFrontend(-1, 'CHECKPOINT_MISSED', 'HUD_MINI_GAME_SOUNDSET', 1)
-												TriggerEvent('trew_easydeliveries:cancel')
-												ESX.ShowNotification( _U('not_enough_items_in_between') )
-											else
-
-												-- ... AND IF NOT, IT WILL LEAD YOU TO THE NEXT CHECKPOINT!
-												currentblip = math.random(1,howmany)
-												PlaySoundFrontend(-1, 'TIMER_STOP', 'HUD_MINI_GAME_SOUNDSET', 1)
-												ESX.ShowNotification( _U('next_checkpoint') )
 											end
-										--end)
 
-									end
+											-- REMOVING THE ITEM FROM YOUR INVENTORY AND GIVE YOU THE REWARD
+											TriggerServerEvent('trew_easydeliveries:removeItemAndReward', product)
+
+											-- CHECKING IF THE DELIVERY IS COMPLETE
+											if blipCount > howmany then
+												TriggerEvent('trew_easydeliveries:cancel')
+												TriggerEvent('trew_easydeliveries:playSound', 'start')
+												ESX.ShowNotification( _U('delivery_complete') )
+											else
+												currentblip = math.random(1,howmany)
+											end
 
 								else
 									DisplayHelpText( _U('press_key_to_start') )
@@ -294,9 +256,8 @@ function trewDeliveryStart(args,cb)
 
 
 				else
-					cb('dead')
 					TriggerEvent('trew_easydeliveries:cancel')
-					PlaySoundFrontend(-1, 'CHECKPOINT_MISSED', 'HUD_MINI_GAME_SOUNDSET', 1)
+					TriggerEvent('trew_easydeliveries:playSound', 'error')
 					ESX.ShowNotification( _U('youre_dead') )
 				end
 			end
@@ -309,6 +270,20 @@ function trewDeliveryStart(args,cb)
 	end)
 
 end
+
+
+RegisterNetEvent('trew_easydeliveries:playSound')
+AddEventHandler('trew_easydeliveries:playSound', function(type)
+	if type == 'start' then
+		PlaySoundFrontend(-1, 'Event_Start_Text', 'GTAO_FM_Events_Soundset', 1)
+	elseif type == 'error' then
+		PlaySoundFrontend(-1, 'CHECKPOINT_MISSED', 'HUD_MINI_GAME_SOUNDSET', 1)
+	elseif type == 'timer' then
+		PlaySoundFrontend(-1, 'TIMER_STOP', 'HUD_MINI_GAME_SOUNDSET', 1)
+	else
+		PlaySoundFrontend(-1, '5_SEC_WARNING', 'HUD_MINI_GAME_SOUNDSET', 1)
+	end
+end)
 
 
 function DisplayHelpText(str)
@@ -352,3 +327,8 @@ function trewDeliveryDrawMarker(markerType,markerCoords,makerColor)
 		false
 	)
 end
+
+
+exports('deliveryStatus', function()
+	return isDeliveryGoing
+end)
