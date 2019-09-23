@@ -29,8 +29,6 @@ That being said, here's an example on how you could do that.
 #### config.lua
 
 ```
-    Config = {}
-
     Config.DrugDeliveryBlipColor = 27
     Config.DrugDeliveryMarkerColor = { 210, 0, 255 }
     Config.DrugDeliveryPickup = { x = 84.72, y = -1958.43, z = 20.20 }
@@ -60,16 +58,6 @@ That being said, here's an example on how you could do that.
         ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
     }
 
-    local ESX    = nil
-
-    -- ESX
-    Citizen.CreateThread(function()
-        while ESX == nil do
-            TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-            Citizen.Wait(0)
-        end
-     
-    end)
 
     isDeliveryGoing = false
 
@@ -138,10 +126,6 @@ That being said, here's an example on how you could do that.
 
 ```
 
-    ESX  = nil
-    local deliveryPlayers = {}
-
-    TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
     RegisterServerEvent('esx_trew_ballas:drugDelivery')
     AddEventHandler('esx_trew_ballas:drugDelivery', function()
