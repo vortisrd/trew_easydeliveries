@@ -228,9 +228,6 @@ I hope you guys like it! :smiley:
 4) Add `start trew_easydeliveries` to your server.cfg
 
 
-## Discord
-
-<a href="https://discord.gg/6pAfTkB" target="_blank"><img src="https://discordapp.com/api/guilds/531620822054600714/widget.png?style=banner2" alt="Discord Banner 2"/></a>
 
 ## Changelog
 **Aug 30th, 2019**
