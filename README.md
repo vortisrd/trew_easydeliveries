@@ -10,10 +10,29 @@ Made for you to create any delivery job you want to or create a delivery mission
 
 ## Demo  
 I created a marker at the Ballas location and made an event that when you press **E**, it starts a delivery mission with 2 locations. If the player below doesn't work, the demonstration can be [found here](https://streamable.com/9nj17)
-https://streamable.com/9nj17
 
-## Download
-https://github.com/vortisrd/trew_easydeliveries
+## Download & Installation
+
+### Using [fvm](https://github.com/qlaffont/fvm-installer)
+```
+fvm install --save --folder=esx vortisrd/trew_easydeliveries
+```
+
+### Using Git
+```
+cd resources
+git clone https://github.com/vortisrd/trew_easydeliveries [esx]/trew_easydeliveries
+```
+### Manually
+- Download https://github.com/vortisrd/trew_easydeliveries/archive/master.zip
+- Put it in the `[esx]` directory
+
+## Installation
+- Add this to your `server.cfg`:
+
+```
+start trew_easydeliveries
+```
 
 ## Usage and Example
 Let's say you have a Ballas gang script and want to create a drug delivery mission. You need to:
